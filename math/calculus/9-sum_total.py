@@ -4,7 +4,7 @@
 
 def summation_i_squared(n):
     """Calculate the first n**2"""
-    if n is not int or n < 1:
+    if (not isinstance(n, int)) or (n < 1):
         return None
     if n == 1:
         return 1
