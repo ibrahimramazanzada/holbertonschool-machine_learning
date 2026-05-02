@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""the whole barn"""
+"""adds every dimension"""
 
 
 def add_matrices(mat1, mat2):
