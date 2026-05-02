@@ -12,26 +12,21 @@ def get_shape(matrix):
         matrix = matrix[0]
     return shape
 
+
 def cat_matrices(mat1, mat2, axis=0):
     """Concatenates two matrices along a specific axis."""
     s1 = get_shape(mat1)
     s2 = get_shape(mat2)
 
-    # 1. Validation: Must have same number of dimensions
     if len(s1) != len(s2):
         return None
 
-    # 2. Validation: All dimensions must match except for the concat axis
     for i in range(len(s1)):
         if i != axis and s1[i] != s2[i]:
             return None
 
-    # 3. Concatenation logic
     if axis == 0:
         return mat1 + mat2
-
-    # Recursive step for axis > 0
-    # Ensure we aren't trying to recurse into non-list elements
     if not isinstance(mat1, list) or not isinstance(mat2, list):
         return None
 
