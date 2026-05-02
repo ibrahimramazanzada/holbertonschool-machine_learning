@@ -3,7 +3,7 @@
 
 
 def add_matrices(mat1, mat2):
-    """Adds"""
+    """Adds matrices"""
     if type(mat1) is not list or type(mat2) is not list:
         return None
 
