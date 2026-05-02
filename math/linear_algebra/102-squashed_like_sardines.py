@@ -36,5 +36,4 @@ def cat_matrices(mat1, mat2, axis=0):
         if res is None:
             return None
         new_matrix.append(res)
-    
     return new_matrix
