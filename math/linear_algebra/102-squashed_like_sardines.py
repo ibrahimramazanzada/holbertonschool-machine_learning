@@ -6,7 +6,8 @@ def cat_matrices(mat1, mat2, axis=0):
     """Concats"""
     if not isinstance(mat1, list) or not isinstance(mat2, list):
         return None
-
+    if len(mat1) != len(mat2):
+        return None 
     if axis == 0:
         return mat1 + mat2
     else:
