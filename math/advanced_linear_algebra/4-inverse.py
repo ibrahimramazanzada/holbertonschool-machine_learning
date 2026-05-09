@@ -19,14 +19,7 @@ def determinant(matrix):
 
 def cofactor(matrix):
     """calculates the cofactor of a matrix"""
-    if (not isinstance(matrix, list) or len(matrix) == 0):
-        raise TypeError("matrix must be a list of lists")
     n = len(matrix)
-    for row in matrix:
-        if (not isinstance(row, list)):
-            raise TypeError("matrix must be a list of lists")
-        if len(row) != n:
-            raise ValueError("matrix must be a non-empty square matrix")
     if n == 1:
         return [[1]]
     cofactor_matrix = []
@@ -51,7 +44,14 @@ def adjugate(matrix):
 
 def inverse(matrix):
     """calculates the inverse of a matrix"""
+    if (not isinstance(matrix, list) or len(matrix) == 0):
+        raise TypeError("matrix must be a list of lists")
     n = len(matrix)
+    for row in matrix:
+        if (not isinstance(row, list)):
+            raise TypeError("matrix must be a list of lists")
+        if len(row) != n:
+            raise ValueError("matrix must be a non-empty square matrix")
     det = determinant(matrix)
     if det == 0:
         return None
