@@ -25,8 +25,8 @@ def minor(matrix):
     for row in matrix:
         if (not isinstance(row, list)):
             raise TypeError("matrix must be a list of lists")
-    if n != len(matrix[0]) or n == 0 or len(matrix[0]) == 0 or matrix == [[]]:
-        raise ValueError("matrix must be a non-empty square matrix")
+        if len(row) != n:
+            raise ValueError("matrix must be a non-empty square matrix")
     if n == 1:
         return [[1]]
     minor_matrix = []
