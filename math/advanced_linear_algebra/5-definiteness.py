@@ -3,7 +3,6 @@
 import numpy as np
 
 
-
 def definiteness(matrix):
     """calculates the definiteness of a matrix"""
     if not isinstance(matrix, np.ndarray):
