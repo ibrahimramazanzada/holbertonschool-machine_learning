@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """binomial likelihood"""
+import numpy as np
 
 
 def likelihood(x, n, P):
