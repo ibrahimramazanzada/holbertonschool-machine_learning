@@ -44,3 +44,16 @@ class Binomial:
         for i in range(1, self.n + 1):
             n_factorial *= i
         return (n_factorial / (k_factorial * n_k_factorial)) * p_k * q_n_k
+
+    def cdf(self, k):
+        """CDF of k"""
+
+        if k < 0:
+            return 0
+        if k >= self.n:
+            return 1
+        k = int(k)
+        cdf = 0
+        for i in range(k + 1):
+            cdf += self.pmf(i)
+        return cdf
