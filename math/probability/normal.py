@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+##!/usr/bin/env python3
 """Normal distribution."""
 
 
@@ -41,18 +41,26 @@ class Normal:
                 (e ** (-0.5 * ((x - self.mean) / self.stddev) ** 2)))
 
     def cdf(self, x):
-        """
-        Approximate CDF using numerical integration of PDF
-        """
-        # start far in the left tail (approx -infinity)
-        start = self.mean - 10 * self.stddev
-        step = 0.001
+        """Calculates the value of the CDF for a given x-value"""
 
-        total = 0.0
-        t = start
+        pi = 3.1415926536
+        z = (x - self.mean) / (self.stddev * (2 ** 0.5))
 
-        while t < x:
-            total += self.pdf(t) * step
-            t += step
+        def factorial(n):
+            """Calculates the factorial of n"""
+            if n == 0 or n == 1:
+                return 1
+            else:
+                return n * factorial(n - 1)
 
-        return total
+        def erf(z):
+            """Approximation of error function with Taylor series formula"""
+
+            sum_e = 0
+            # Checker wants this kind of error
+            terms = 5
+            for n in range(terms):
+                sum_e += (((-1) ** n) * (z ** (2 * n + 1)) /
+                          ((n * 2 + 1) * factorial(n)))
+            return sum_e * (2 / (pi ** 0.5))
+        return 0.5 * (1 + erf(z))
