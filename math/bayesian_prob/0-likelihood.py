@@ -21,7 +21,7 @@ def likelihood(x, n, P):
         for i in range(1, n + 1):
             n_factorial *= i
         return (n_factorial / (x_factorial * n_x_factorial)) * p_x * q_n_x
-    if n <= 0 or not isinstance(n, int):
+    if not isinstance(n, int) or n <= 0:
         raise ValueError("n must be a positive integer")
     if x < 0 or not isinstance(x, int):
         raise ValueError("x must be an integer that is "
