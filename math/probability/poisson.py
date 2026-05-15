@@ -32,7 +32,7 @@ class Poisson:
         for i in range(1, k + 1):
             k_factorial *= i
         return (lambtha_k * e_lambtha) / k_factorial
-    
+
     def cdf(self, k):
         """CDF of k"""
 
