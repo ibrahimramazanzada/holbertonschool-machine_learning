@@ -31,3 +31,20 @@ class Normal:
         """X-value of z"""
 
         return self.mean + z * self.stddev
+
+    def pdf(self, x):
+        """PDF of x"""
+
+        e = 2.7182818285
+        pi = 3.1415926536
+        return ((1 / (self.stddev * ((2 * pi) ** 0.5))) *
+                (e ** (-0.5 * ((x - self.mean) / self.stddev) ** 2)))
+
+    def cdf(self, x):
+        """CDF of x"""
+
+        e = 2.7182818285
+        pi = 3.1415926536
+        z = (x - self.mean) / (self.stddev * (2 ** 0.5))
+        erf = (1 - (1 / (e ** (z ** 2) * ((pi * z) ** 0.5))))
+        return 0.5 * (1 + erf)
