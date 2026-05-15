@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""""Binomial distribution"""
+"""Binomial distribution"""
 
 
 class Binomial:
@@ -20,5 +20,6 @@ class Binomial:
                 raise ValueError("data must contain multiple values")
             mean = sum(data) / len(data)
             variance = sum((x - mean) ** 2 for x in data) / len(data)
-            self.p = 1 - (variance / mean) if mean else 0
-            self.n = int(round(mean / self.p)) if self.p else 0
+            self.p = 1 - (variance / mean)
+            self.n = int(round(mean / self.p))
+            self.p = float(mean / self.n)
