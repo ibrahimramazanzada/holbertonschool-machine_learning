@@ -41,10 +41,18 @@ class Normal:
                 (e ** (-0.5 * ((x - self.mean) / self.stddev) ** 2)))
 
     def cdf(self, x):
-        """CDF of x"""
+        """
+        Approximate CDF using numerical integration of PDF
+        """
+        # start far in the left tail (approx -infinity)
+        start = self.mean - 10 * self.stddev
+        step = 0.001
 
-        e = 2.7182818285
-        pi = 3.1415926536
-        z = (x - self.mean) / (self.stddev * (2 ** 0.5))
-        erf = (1 - (1 / (e ** (z ** 2) * ((pi * z) ** 0.5))))
-        return 0.5 * (1 + erf)
+        total = 0.0
+        t = start
+
+        while t < x:
+            total += self.pdf(t) * step
+            t += step
+
+        return total
