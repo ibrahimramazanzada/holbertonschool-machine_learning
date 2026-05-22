@@ -13,7 +13,7 @@ def mean_cov(X):
     if n < 2:
         raise ValueError("X must contain multiple data points")
 
-    mean = np.mean(X, axis=0)
+    mean = np.array([np.sum(X, axis=0) / n])
     cov = np.matmul((X - mean).T, (X - mean)) / (n - 1)
 
-    return [mean], cov
+    return mean, cov
