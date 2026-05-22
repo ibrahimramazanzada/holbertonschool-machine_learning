@@ -1,4 +1,4 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 """calculating correlation matrix"""
 import numpy as np
 
