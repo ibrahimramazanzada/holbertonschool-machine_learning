@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+##!/usr/bin/env python3
 '''stacked bar chart'''
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,7 +17,7 @@ def bars():
             bottom=fruit[0], color='yellow')
 
     plt.bar(x, fruit[2], width=bar_width, label='oranges',
-            bottom=fruit[0] + fruit[1], color='orange')
+            bottom=fruit[0] + fruit[1], color='#ff8000')
 
     plt.bar(x, fruit[3], width=bar_width, label='peaches',
             bottom=fruit[0] + fruit[1] + fruit[2], color='#ffe5b4')
@@ -27,4 +27,5 @@ def bars():
     plt.xticks(x, ['Farrah', 'Fred', 'Felicia'])
     plt.legend()
     plt.ylim(0, 80)
+    plt.yticks(np.arange(0, 81, 10))
     plt.show()
