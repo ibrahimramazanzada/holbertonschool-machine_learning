@@ -4,4 +4,4 @@
 
 def prune(df):
     '''returns a pd.DataFrame with all rows with missing values removed'''
-    return df['Close'].dropna()
+    return df.dropna(subset=['Close'])
