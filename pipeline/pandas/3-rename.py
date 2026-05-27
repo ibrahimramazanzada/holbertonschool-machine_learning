@@ -6,5 +6,5 @@ import pandas as pd
 def rename(df):
     '''renames columns and changes data types'''
     df = df.rename(columns={'Timestamp': 'Datetime',})
-    df['Datetime'] = df['Datetime'].astype('datetime64[ns]')
+    df['Datetime'] = df['Datetime'].astype('datetime64[s]')
     return df[['Datetime','Close']].copy()
