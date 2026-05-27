@@ -4,5 +4,5 @@
 
 def slice(df):
     """returns a slice of a pd.DataFrame"""
-    df2 = df.loc[:, ['High', 'Low', 'Close', 'Volume_BTC']]
+    df2 = df.loc[:, ['High', 'Low', 'Close', 'Volume_(BTC)']]
     return df2.iloc[::60]
