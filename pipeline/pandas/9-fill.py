@@ -6,9 +6,8 @@ def fill(df):
     '''drop and fill'''
     df.drop(columns=['Weighted_Price'], inplace=True)
     df['Close'].fillna(method='ffill', inplace=True)
-    cols = ['High', 'Low', 'Open']
-    df[cols] = df[cols].fillna(df['Close'])
+    for col in ['High', 'Low', 'Open']:
+        df[col] = df[col].fillna(df['Close'])
     df['Volume_(BTC)'].fillna(0, inplace=True)
     df['Volume_(Currency)'].fillna(0, inplace=True)
     return df
-    
