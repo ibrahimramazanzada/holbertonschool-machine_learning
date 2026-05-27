@@ -1,11 +1,11 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 '''frequency distribution'''
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 def frequency():
-
+    '''plotting a frequency distribution'''
     np.random.seed(5)
     student_grades = np.random.normal(68, 15, 50)
     plt.figure(figsize=(6.4, 4.8))
