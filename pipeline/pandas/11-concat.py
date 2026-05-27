@@ -2,6 +2,7 @@
 '''concatenating two pd.DataFrames'''
 import pandas as pd
 
+
 def concat(df1, df2):
     '''returns a concatenated pd.DataFrame'''
     df1 = df1.set_index('Timestamp')
