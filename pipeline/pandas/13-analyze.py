@@ -4,4 +4,5 @@
 
 def analyze(df):
     '''returns a pd.DataFrame with the result of df.describe()'''
-    return df.describe(exclude='Timestamp')
+    df.drop(columns=['Timestamp'], inplace=True)
+    return df.describe()
