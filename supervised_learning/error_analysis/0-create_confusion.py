@@ -1,4 +1,4 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 '''Creating confusion matrix from labels and logits.'''
 import numpy as np
 
