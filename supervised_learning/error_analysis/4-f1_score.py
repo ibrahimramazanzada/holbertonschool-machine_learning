@@ -6,6 +6,7 @@ sensitivity = __import__('1-sensitivity').sensitivity
 
 
 def f1_score(confusion):
+    '''Calculate F1 score from confusion matrix with lots of classes.'''
     p = precision(confusion)
     s = sensitivity(confusion)
     f1 = 2 * (p * s) / (p + s)
