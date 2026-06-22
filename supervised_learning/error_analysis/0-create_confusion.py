@@ -9,7 +9,7 @@ def create_confusion_matrix(labels, logits):
     true = np.argmax(labels, axis=1)
     num_classes = logits.shape[1]
 
-    confusion_matrix = np.zeros((num_classes, num_classes), dtype=int)
+    confusion_matrix = np.zeros((num_classes, num_classes), dtype=float)
 
     for i in range(len(true)):
         true_class = true[i]
