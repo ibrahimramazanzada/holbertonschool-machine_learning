@@ -86,6 +86,32 @@ class Node:
             right_leaves = self.right_child.get_leaves_below()
             return left_leaves + right_leaves
 
+    def update_bounds_below(self):
+        '''Update the bounds of all nodes below this node.'''
+        if self.is_root:
+            self.upper = {0: np.inf}
+            self.lower = {0: -1*np.inf}
+
+        for child in [self.left_child, self.right_child]:
+            child.lower = self.lower.copy()
+            child.upper = self.upper.copy()
+
+            feature = self.feature
+            threshold = self.threshold
+
+        if child == self.left_child:
+            # Left: feature <= threshold
+            child.upper[feature] = min(child.upper.get(feature, np.inf),
+                                       threshold)
+
+        else:
+            # Right: feature > threshold
+            child.lower[feature] = max(child.lower.get(feature, -np.inf),
+                                       threshold)
+
+        for child in [self.left_child, self.right_child]:
+            child.update_bounds_below()
+
 
 class Leaf(Node):
     '''A leaf node in a decision tree.'''
@@ -111,6 +137,10 @@ class Leaf(Node):
     def get_leaves_below(self):
         '''Return a list of all leaves below this node.'''
         return [self]
+
+    def update_bounds_below(self):
+        '''Update the bounds of all nodes below this node.'''
+        pass
 
 
 class Decision_Tree():
@@ -145,3 +175,7 @@ class Decision_Tree():
     def get_leaves(self):
         '''Return a list of all leaves in the tree.'''
         return self.root.get_leaves_below()
+
+    def update_bounds(self):
+        '''Update the bounds of all nodes in the tree.'''
+        self.root.update_bounds_below()
