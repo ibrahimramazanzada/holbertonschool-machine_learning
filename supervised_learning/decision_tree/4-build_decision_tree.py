@@ -100,10 +100,18 @@ class Node:
             threshold = self.threshold
 
         if child == self.left_child:
-            child.upper[feature] = threshold
+            # LEFT → feature > threshold
+            if feature in child.lower:
+                child.lower[feature] = max(child.lower[feature], threshold)
+            else:
+                child.lower[feature] = threshold
 
         else:
-            child.lower[feature] = threshold
+            # RIGHT → feature ≤ threshold
+            if feature in child.upper:
+                child.upper[feature] = min(child.upper[feature], threshold)
+            else:
+                child.upper[feature] = threshold
 
         for child in [self.left_child, self.right_child]:
             child.update_bounds_below()
