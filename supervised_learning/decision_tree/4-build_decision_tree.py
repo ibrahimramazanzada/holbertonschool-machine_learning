@@ -99,7 +99,7 @@ class Node:
             feature = self.feature
             threshold = self.threshold
 
-        if child == self.left_child:
+        if child is self.left_child:
             # LEFT → feature > threshold
             if feature in child.lower:
                 child.lower[feature] = max(child.lower[feature], threshold)
