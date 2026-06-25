@@ -117,8 +117,9 @@ class Node:
             child.update_bounds_below()
 
     def update_indicator(self):
-
+        '''Update the indicator function of this node.'''
         def is_large_enough(x):
+            '''Return a boolean array indicating whether x is large enough.'''
             return np.all(
                 np.array([np.greater(x[:, key], self.lower[key])
                           for key in self.lower.keys()]),
@@ -126,6 +127,7 @@ class Node:
             )
 
         def is_small_enough(x):
+            '''Return a boolean array indicating whether x is small enough.'''
             return np.all(
                 np.array([np.less_equal(x[:, key], self.upper[key])
                           for key in self.upper.keys()]),
