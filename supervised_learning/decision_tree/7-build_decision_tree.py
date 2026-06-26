@@ -308,7 +308,7 @@ class Decision_Tree():
 
         is_left_leaf = (
             left_population.size < self.min_pop
-            or node.depth >= self.max_depth
+            or node.depth + 1 >= self.max_depth
             or np.unique(self.target[left_population]).size <= 1
         )
 
@@ -320,7 +320,7 @@ class Decision_Tree():
 
         is_right_leaf = (
             right_population.size < self.min_pop
-            or node.depth >= self.max_depth
+            or node.depth + 1 >= self.max_depth
             or np.unique(self.target[right_population]).size <= 1
         )
 
