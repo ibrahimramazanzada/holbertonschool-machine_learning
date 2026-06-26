@@ -3,6 +3,7 @@
 import numpy as np
 from sklearn import datasets
 
+
 class Node:
     '''A node in a decision tree.'''
     def __init__(self, feature=None, threshold=None, left_child=None,
@@ -256,7 +257,8 @@ class Decision_Tree():
     - Depth                     : {self.depth()}
     - Number of nodes           : {self.count_nodes()}
     - Number of leaves          : {self.count_nodes(only_leaves=True)}
-    - Accuracy on training data : {self.accuracy(self.explanatory, self.target)}""")
+    - Accuracy on training data : {self.accuracy(self.explanatory,
+                                                 self.target)}""")
 
     def np_extrema(self, arr):
         '''Return the minimum and maximum of a numpy array.'''
@@ -286,7 +288,8 @@ class Decision_Tree():
 
         if not np.any(bool_mask):
             node.left_child = self.get_leaf_child(node, np.where(bool_mask)[0])
-            node.right_child = self.get_leaf_child(node, np.where(bool_mask)[0])
+            node.right_child = self.get_leaf_child(node,
+                                                   np.where(bool_mask)[0])
             return
 
         # Store as boolean mask for random_split_criterion to use
@@ -328,7 +331,7 @@ class Decision_Tree():
             self.fit_node(node.right_child)
 
     def get_leaf_child(self, node, sub_population):
-        '''Return a new leaf child of the given node with the given sub_population.'''
+        '''Return a new leaf child of the given node'''
         if sub_population.size == 0:
             value = 0  # default fallback
         else:
