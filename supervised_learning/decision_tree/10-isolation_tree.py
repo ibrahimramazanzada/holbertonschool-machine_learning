@@ -39,6 +39,9 @@ class Isolation_Random_Tree():
 
     def update_bounds(self):
         '''Update the bounds of all nodes in the tree.'''
+        n_features = self.explanatory.shape[1]
+        self.root.upper = {i: np.inf for i in range(n_features)}
+        self.root.lower = {i: -np.inf for i in range(n_features)}
         self.root.update_bounds_below()
 
     def update_predict(self):
