@@ -104,7 +104,7 @@ class Isolation_Random_Tree():
         # Is left node a leaf ?
         is_left_leaf = (
             node.depth + 1 >= self.max_depth or
-            np.sum(left_population) < self.min_pop
+            np.sum(left_population) <= self.min_pop
         )
 
         if is_left_leaf:
@@ -116,7 +116,7 @@ class Isolation_Random_Tree():
         # Is right node a leaf ?
         is_right_leaf = (
             node.depth + 1 >= self.max_depth or
-            np.sum(right_population) < self.min_pop
+            np.sum(right_population) <= self.min_pop
         )
 
         if is_right_leaf:
