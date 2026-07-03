@@ -50,3 +50,12 @@ class Neuron():
         cost = self.cost(Y, A)
         prediction = np.where(A >= 0.5, 1, 0)
         return prediction, cost
+
+    def gradient_descent(self, X, Y, A, alpha=0.05):
+        '''Calculates one pass of gradient descent on the neuron'''
+        m = Y.shape[1]
+        dZ = A - Y
+        dW = (1 / m) * np.dot(dZ, X.T)
+        db = (1 / m) * np.sum(dZ)
+        self.__W = self.__W - alpha * dW
+        self.__b = self.__b - alpha * db
