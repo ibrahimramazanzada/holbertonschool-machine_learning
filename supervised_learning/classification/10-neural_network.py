@@ -53,3 +53,11 @@ class NeuralNetwork():
     def A2(self):
         '''Returns the activated output for the output layer'''
         return self.__A2
+
+    def forward_prop(self, X):
+        '''Calculates the forward propagation of the neural network'''
+        Z1 = np.dot(self.__W1, X) + self.__b1
+        self.__A1 = 1 / (1 + np.exp(-Z1))
+        Z2 = np.dot(self.__W2, self.__A1) + self.__b2
+        self.__A2 = 1 / (1 + np.exp(-Z2))
+        return self.__A1, self.__A2
