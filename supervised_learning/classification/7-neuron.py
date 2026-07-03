@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''Beginning of neural network implementation'''
+'''Beginning of neural network implementation: Neuron class'''
 import numpy as np
 
 
