@@ -36,3 +36,9 @@ class Neuron():
         Z = np.dot(self.__W, X) + self.__b
         self.__A = 1 / (1 + np.exp(-Z))
         return self.__A
+
+    def cost(self, Y, A):
+        '''Calculates the cost of model using logistic regression'''
+        m = Y.shape[1]
+        cost = - (1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        return cost
