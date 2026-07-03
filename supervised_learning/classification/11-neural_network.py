@@ -68,3 +68,10 @@ class NeuralNetwork():
         cost = - (1 / m) * np.sum(Y * np.log(A) +
                                   (1 - Y) * np.log(1.0000001 - A))
         return cost
+
+    def evaluate(self, X, Y):
+        '''Evaluates the neural network’s predictions'''
+        A1, A2 = self.forward_prop(X)
+        cost = self.cost(Y, A2)
+        prediction = np.where(A2 >= 0.5, 1, 0)
+        return prediction, cost
