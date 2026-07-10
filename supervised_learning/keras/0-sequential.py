@@ -14,6 +14,12 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
                 kernel_regularizer=K.regularizers.l2(lambtha),
                 input_shape=(nx,)
             ))
+        elif i == len(layers) - 1:
+            sequential_model.add(K.layers.Dense(
+                layers[i],
+                activation=activations[i],
+                kernel_regularizer=K.regularizers.l2(lambtha)
+            ))
         else:
             sequential_model.add(K.layers.Dense(
                 layers[i],
