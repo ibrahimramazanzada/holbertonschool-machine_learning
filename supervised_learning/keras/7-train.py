@@ -6,6 +6,7 @@ import tensorflow.keras as K
 def train_model(network, data, labels, batch_size, epochs,
                 validation_data=None, early_stopping=False, patience=0,
                 learning_rate_decay=False, alpha=0.1, decay_rate=1,
+                save_best=False, file_path=None,
                 verbose=True, shuffle=False):
     '''Trains a model using mini-batch gradient descent'''
     callbacks = []
@@ -22,5 +23,6 @@ def train_model(network, data, labels, batch_size, epochs,
     history = network.fit(x=data, y=labels, batch_size=batch_size,
                           epochs=epochs, validation_data=validation_data,
                           callbacks=callbacks if callbacks else None,
+                          save_best_only=save_best, filepath=file_path,
                           verbose=verbose, shuffle=shuffle)
     return history
