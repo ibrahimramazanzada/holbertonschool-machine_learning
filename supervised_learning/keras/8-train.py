@@ -9,24 +9,28 @@ def train_model(network, data, labels, batch_size, epochs,
                 save_best=False, file_path=None,
                 verbose=True, shuffle=False):
     '''Trains a model using mini-batch gradient descent'''
+
     callbacks = []
-    if validation_data and early_stopping:
+    if validation_data is not None and early_stopping:
         early_stopping = K.callbacks.EarlyStopping(monitor='val_loss',
                                                    patience=patience)
         callbacks.append(early_stopping)
-    if validation_data and learning_rate_decay:
+
+    if validation_data is not None and learning_rate_decay:
         def scheduler(epoch):
             return alpha / (1 + decay_rate * epoch)
         learning_rate_decay = K.callbacks.LearningRateScheduler(scheduler,
                                                                 verbose=1)
         callbacks.append(learning_rate_decay)
-    if validation_data and save_best and file_path:
+
+    if validation_data is not None and save_best and file_path:
         save_best = K.callbacks.ModelCheckpoint(filepath=file_path,
                                                 monitor='val_loss',
                                                 save_best_only=True)
         callbacks.append(save_best)
+
     history = network.fit(x=data, y=labels, batch_size=batch_size,
                           epochs=epochs, validation_data=validation_data,
-                          callbacks=callbacks if callbacks else None,
+                          callbacks=callbacks,
                           verbose=verbose, shuffle=shuffle)
     return history
