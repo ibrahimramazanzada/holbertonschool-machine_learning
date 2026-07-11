@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 '''Optimization'''
-import numpy as np
 from 2-shuffle_data import shuffle_data
 
 
