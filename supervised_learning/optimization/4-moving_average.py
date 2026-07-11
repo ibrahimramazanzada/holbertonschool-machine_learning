@@ -10,8 +10,8 @@ def moving_average(data, beta):
     if not isinstance(beta, float) or beta < 0 or beta >= 1:
         return None
     moving_averages = np.zeros(data.shape)
-    moving_averages[0] = data[0]
-    for i in range(1, data.shape[0]):
-        moving_averages[i] = beta * moving_averages[i - 1] + (1 - beta) * data[i]
-        moving_averages[i] /= (1 - beta ** (i + 1))
+    v = 0
+    for i in range(data.shape[0]):
+        v = beta * v + (1 - beta) * data[i]
+        moving_averages[i] = v / (1 - beta ** (i + 1))
     return moving_averages
