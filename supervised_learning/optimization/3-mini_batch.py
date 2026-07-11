@@ -3,7 +3,7 @@
 shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
-def mini_batch(X, Y, batch_size):
+def create_mini_batches(X, Y, batch_size):
     '''creates mini-batches from two matrices'''
     if X.shape[0] != Y.shape[0]:
         return None, None
