@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''Optimization'''
-from 2-shuffle_data import shuffle_data
+shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
 def mini_batch(X, Y, batch_size):
