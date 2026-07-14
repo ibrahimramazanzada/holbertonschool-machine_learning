@@ -3,12 +3,10 @@
 import tensorflow as tf
 
 
-def learning_rate_decay(alpha, decay_rate, global_step, decay_step):
+def learning_rate_decay(alpha, decay_rate, decay_step):
     """Updates the learning rate using inverse time decay in tensorflow."""
-    schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
-        alpha=alpha,
-        decay_step=decay_step,
-        decay_rate=decay_rate,
-        staircase=True
-    )
-    return schedule(global_step)
+    global_step = tf.Variable(0, trainable=False)
+    alpha = tf.compat.v1.train.inverse_time_decay(alpha, global_step,
+                                                  decay_step, decay_rate,
+                                                  staircase=True)
+    return alpha
