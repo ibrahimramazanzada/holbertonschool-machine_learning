@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''Optimization'''
-import TensorFlow as tf
+import tensorflow as tf
 
 
 def create_momentum_op(alpha, beta1):
