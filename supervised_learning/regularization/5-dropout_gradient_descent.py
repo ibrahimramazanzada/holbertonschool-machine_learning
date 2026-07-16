@@ -5,7 +5,7 @@ import numpy as np
 
 
 def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
-    """Updates the weights of a neural network with dropout using gradient descent"""
+    """Updates the weights of a nn with dropout using gradient descent"""
 
     m = Y.shape[1]
     dZ = cache["A{}".format(L)] - Y
