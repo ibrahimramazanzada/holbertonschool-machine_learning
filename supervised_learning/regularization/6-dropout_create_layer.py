@@ -1,22 +1,16 @@
 #!/usr/bin/env python3
 """Forward propagation with dropout"""
 
-import numpy as np
+import tensorflow as tf
 
 
 def dropout_create_layer(prev, n, activation, keep_prob,training=True):
     """Creates a layer of a neural network using dropout"""
-    if activation not in ['sigmoid', 'tanh', 'relu']:
-        return None
+    
+    initializer = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
+    layer = tf.layers.Dense(units=n, activation=activation,
+                            kernel_initializer=initializer)
+    dropout_layer = layer(prev, training=training)
+    dropout_layer = tf.nn.dropout(dropout_layer, keep_prob)
 
-    W = np.random.randn(n, prev) * np.sqrt(2 / prev)
-    b = np.zeros((n, 1))
-
-    if training:
-        D = np.random.rand(n, 1) < keep_prob
-        A = np.matmul(W, prev) + b
-        A = A * D / keep_prob
-    else:
-        A = np.matmul(W, prev) + b
-
-    return A
+    return dropout_layer
