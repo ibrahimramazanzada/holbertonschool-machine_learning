@@ -6,7 +6,7 @@ from tensorflow import keras as K
 def lenet5(X):
     """builds a modified version of the LeNet-5 architecture using keras"""
 
-    init = K.initializers.he_normal(seed=None)
+    init = K.initializers.he_normal(seed=0)
 
     model = K.Sequential()
 
@@ -15,7 +15,7 @@ def lenet5(X):
         kernel_size=(5, 5),
         padding='same',
         activation='relu',
-        kernel_initializer=K.initializers.he_normal(seed=0),
+        kernel_initializer=init,
         input_shape=X.shape[1:]
     ))
 
@@ -26,7 +26,7 @@ def lenet5(X):
         kernel_size=(5, 5),
         padding='valid',
         activation='relu',
-        kernel_initializer=K.initializers.he_normal(seed=0)
+        kernel_initializer=init
     ))
 
     model.add(K.layers.MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
