@@ -6,35 +6,23 @@ import numpy as np
 def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     """backward propagation over a convolutional layer of a neural network"""
     m, h_prev, w_prev, c_prev = A_prev.shape
-    _, h_new, w_new, c_new = dZ.shape
-    kh, kw, _, _ = W.shape
+    kh, kw, _, c_new = W.shape
     sh, sw = stride
 
     if padding == "same":
-        pad_h = max((h_new - 1) * sh + kh - h_prev, 0)
-        pad_w = max((w_new - 1) * sw + kw - w_prev, 0)
-
-        ph_before = pad_h // 2
-        ph_after = pad_h - ph_before
-
-        pw_before = pad_w // 2
-        pw_after = pad_w - pw_before
-
+        ph = int(((h_prev - 1) * sh + kh - h_prev) / 2)
+        pw = int(((w_prev - 1) * sw + kw - w_prev) / 2)
     elif padding == "valid":
-        ph_before = ph_after = 0
-        pw_before = pw_after = 0
-
+        ph, pw = 0, 0
     else:
-        raise ValueError("padding must be 'same' or 'valid'")
+        ph, pw = padding
+
+    new_h = int((h_prev + 2 * ph - kh) / sh) + 1
+    new_w = int((w_prev + 2 * pw - kw) / sw) + 1
 
     A_prev_pad = np.pad(
         A_prev,
-        (
-            (0, 0),
-            (ph_before, ph_after),
-            (pw_before, pw_after),
-            (0, 0)
-        ),
+        ((0, 0), (ph, ph), (pw, pw), (0, 0)),
         mode="constant"
     )
 
@@ -43,9 +31,8 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
 
     db = np.sum(dZ, axis=(0, 1, 2)).reshape(b.shape)
 
-    for i in range(h_new):
-        for j in range(w_new):
-
+    for i in range(new_h):
+        for j in range(new_w):
             vert_start = i * sh
             vert_end = vert_start + kh
 
@@ -60,7 +47,6 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
             ]
 
             for k in range(c_new):
-
                 dz = dZ[:, i:i + 1, j:j + 1, k:k + 1]
 
                 dA_prev_pad[
@@ -75,11 +61,14 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                     axis=0
                 )
 
-    dA_prev = dA_prev_pad[
-        :,
-        ph_before:ph_before + h_prev,
-        pw_before:pw_before + w_prev,
-        :
-    ]
+    if padding == "same":
+        dA_prev = dA_prev_pad[
+            :,
+            ph:ph + h_prev,
+            pw:pw + w_prev,
+            :
+        ]
+    else:
+        dA_prev = dA_prev_pad
 
     return dA_prev, dW, db
