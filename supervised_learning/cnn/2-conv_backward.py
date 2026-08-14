@@ -11,30 +11,14 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     sh, sw = stride
 
     if padding == "same":
-        pad_h = max((h_new - 1) * sh + kh - h_prev, 0)
-        pad_w = max((w_new - 1) * sw + kw - w_prev, 0)
-
-        ph_before = pad_h // 2
-        ph_after = pad_h - ph_before
-
-        pw_before = pad_w // 2
-        pw_after = pad_w - pw_before
-
+        ph = int(((h_prev - 1) * sh + kh - h_prev) / 2)
+        pw = int(((w_prev - 1) * sw + kw - w_prev) / 2)
     elif padding == "valid":
-        ph_before = ph_after = 0
-        pw_before = pw_after = 0
-
-    else:
-        raise ValueError("padding must be 'same' or 'valid'")
+        ph, pw = 0, 0
 
     A_prev_pad = np.pad(
         A_prev,
-        (
-            (0, 0),
-            (ph_before, ph_after),
-            (pw_before, pw_after),
-            (0, 0)
-        ),
+        ((0, 0), (ph, ph), (pw, pw), (0, 0)),
         mode="constant"
     )
 
@@ -59,7 +43,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
             ]
 
             for k in range(c_new):
-                dz = dZ[:, i:i+1, j:j+1, k:k+1]
+                dz = dZ[:, i:i + 1, j:j + 1, k:k + 1]
 
                 dA_prev_pad[
                     :,
@@ -76,8 +60,8 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     if padding == "same":
         dA_prev = dA_prev_pad[
             :,
-            ph_before:ph_before + h_prev,
-            pw_before:pw_before + w_prev,
+            ph:-ph if ph != 0 else None,
+            pw:-pw if pw != 0 else None,
             :
         ]
     else:
