@@ -10,8 +10,8 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     sh, sw = stride
 
     if padding == "same":
-        ph = int(((h_prev - 1) * sh + kh - h_prev) / 2)
-        pw = int(((w_prev - 1) * sw + kw - w_prev) / 2)
+        ph = int(np.ceil(((h_prev - 1) * sh + kh - h_prev) / 2))
+        pw = int(np.ceil(((w_prev - 1) * sw + kw - w_prev) / 2))
     elif padding == "valid":
         ph, pw = 0, 0
     else:
