@@ -51,4 +51,8 @@ def lenet5(X):
         kernel_initializer=init
     ))
 
+    model.compile(optimizer=K.optimizers.Adam(),
+                  loss='categorical_crossentropy',
+                  metrics=['accuracy'])
+
     return model
