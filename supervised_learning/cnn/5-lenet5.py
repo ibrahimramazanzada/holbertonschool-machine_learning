@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """lenet5 architecture implementation"""
-from tensorflow import keras as K
+from tensorflow import Keras as K
 
 
 def lenet5(X):
