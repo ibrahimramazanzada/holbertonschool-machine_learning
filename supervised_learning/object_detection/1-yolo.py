@@ -55,6 +55,9 @@ class Yolo:
             # Convert to corner coordinates
             box_x1y1 = box_xy - (box_wh / 2)
             box_x2y2 = box_xy + (box_wh / 2)
+            boxes.append(grid_h)
+            boxes.append(grid_w)
+            boxes.append(anchor_boxes)
             boxes.append(np.concatenate((box_x1y1, box_x2y2), axis=-1))
 
             # Append confidences and class probabilities
