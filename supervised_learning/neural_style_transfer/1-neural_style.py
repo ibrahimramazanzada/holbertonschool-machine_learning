@@ -76,6 +76,8 @@ class NST:
         vgg = tf.keras.models.load_model(
             "VGG19_base_model", custom_objects=custom_objects)
 
+        vgg.trainable = False
+
         style_outputs = [vgg.get_layer(name).output
                          for name in self.style_layers]
         content_output = vgg.get_layer(self.content_layer).output
