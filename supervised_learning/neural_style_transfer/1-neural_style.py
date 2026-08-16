@@ -62,3 +62,20 @@ class NST:
             image, size=[new_h, new_w], method='bicubic')
         scaled_image = tf.clip_by_value(resized_image / 255.0, 0, 1)
         return scaled_image
+
+    def load_model(self):
+        """
+        Method that loads the VGG19 model and creates a new model that
+        outputs the style and content features
+        """
+        vgg = tf.keras.applications.VGG19(include_top=False,
+                                          weights='imagenet')
+        vgg.trainable = False
+
+        style_outputs = [vgg.get_layer(name).output
+                         for name in self.style_layers]
+        content_output = vgg.get_layer(self.content_layer).output
+
+        model_outputs = style_outputs + [content_output]
+
+        self.model = tf.keras.Model(vgg.input, model_outputs)
