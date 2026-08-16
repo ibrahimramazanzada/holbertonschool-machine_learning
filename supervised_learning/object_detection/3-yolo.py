@@ -140,3 +140,22 @@ class Yolo:
 
         return (np.array(nms_boxes),
                 np.array(nms_classes), np.array(nms_scores))
+
+    def iou(self, box1, boxes):
+        """
+        Method that calculates the Intersection over Union (IoU)
+        """
+        x1 = np.maximum(box1[0], boxes[..., 0])
+        y1 = np.maximum(box1[1], boxes[..., 1])
+        x2 = np.minimum(box1[2], boxes[..., 2])
+        y2 = np.minimum(box1[3], boxes[..., 3])
+
+        intersection = np.maximum(0, x2 - x1) * np.maximum(0, y2 - y1)
+
+        box1_area = (box1[2] - box1[0]) * (box1[3] - box1[1])
+        boxes_area = ((boxes[..., 2] - boxes[..., 0]) *
+                      (boxes[..., 3] - boxes[..., 1]))
+
+        union = box1_area + boxes_area - intersection
+
+        return intersection / union
