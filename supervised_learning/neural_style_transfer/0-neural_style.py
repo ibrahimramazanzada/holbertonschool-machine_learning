@@ -3,6 +3,7 @@
 import tensorflow as tf
 import numpy as np
 
+
 class NST:
     """
     Neural Style Transfer class
@@ -44,15 +45,16 @@ class NST:
         h, w, _ = image.shape
         if h < 256 or w < 256:
             raise ValueError("image height and width must be at least 256")
-        # Resize the image to have its largest side equal to 512 pixels
+
         if h > w:
             new_h = 512
             new_w = int(w * (512 / h))
         else:
             new_w = 512
             new_h = int(h * (512 / w))
+
+        image = image[tf.newaxis, ...]
         resized_image = tf.image.resize(
-            image, [new_h, new_w], method='bicubic')
-        # Scale pixel values to [0, 1]
-        scaled_image = resized_image / 255.0
+            image, size=[new_h, new_w], method='bicubic')
+        scaled_image = tf.clip_by_value(resized_image / 255.0, 0, 1)
         return scaled_image
