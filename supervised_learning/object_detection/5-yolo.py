@@ -190,7 +190,7 @@ class Yolo:
 
         for image in images:
             original_sizes.append(image.shape[:2])
-            resized_image = cv2.resize(image, (input_width, input_height))
+            resized_image = cv2.resize(image, (input_width, input_height), interpolation=cv2.INTER_CUBIC)
             normalized_image = resized_image / 255.0
             preprocessed_images.append(normalized_image)
 
