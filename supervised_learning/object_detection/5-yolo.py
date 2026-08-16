@@ -194,4 +194,4 @@ class Yolo:
             normalized_image = resized_image / 255.0
             preprocessed_images.append(normalized_image)
 
-        return np.array(preprocessed_images), original_sizes
+        return (np.array(preprocessed_images), original_sizes)
