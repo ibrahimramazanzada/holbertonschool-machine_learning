@@ -103,3 +103,40 @@ class Yolo:
             filtered_scores = np.array([])
 
         return (filtered_boxes, filtered_classes, filtered_scores)
+
+    def non_max_suppression(self, filtered_boxes, filtered_classes,
+                            filtered_scores):
+        """
+        Method that applies non-max suppression to the filtered boxes
+        """
+        nms_boxes = []
+        nms_classes = []
+        nms_scores = []
+
+        unique_classes = np.unique(filtered_classes)
+
+        for cls in unique_classes:
+            cls_mask = filtered_classes == cls
+            cls_boxes = filtered_boxes[cls_mask]
+            cls_scores = filtered_scores[cls_mask]
+
+            # Sort boxes by scores
+            sorted_indices = np.argsort(cls_scores)[::-1]
+            cls_boxes = cls_boxes[sorted_indices]
+            cls_scores = cls_scores[sorted_indices]
+
+            while len(cls_boxes) > 0:
+                nms_boxes.append(cls_boxes[0])
+                nms_classes.append(cls)
+                nms_scores.append(cls_scores[0])
+
+                if len(cls_boxes) == 1:
+                    break
+
+                ious = self.iou(cls_boxes[0], cls_boxes[1:])
+                keep_indices = np.where(ious < self.nms_t)[0] + 1
+                cls_boxes = cls_boxes[keep_indices]
+                cls_scores = cls_scores[keep_indices]
+
+        return (np.array(nms_boxes),
+                np.array(nms_classes), np.array(nms_scores))
