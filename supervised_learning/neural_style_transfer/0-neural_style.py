@@ -17,13 +17,13 @@ class NST:
         Constructor method for the NST class
         """
         if (not isinstance(style_image, np.ndarray) or
-           style_image.ndim != 3 or style_image.shape[2] != 3):
-            raise TypeError("style_image must be a numpy.ndarray "
-                            "of shape (h, w, 3)")
+                style_image.ndim != 3 or style_image.shape[2] != 3):
+            raise TypeError(
+                "style_image must be a numpy.ndarray with shape (h, w, 3)")
         if (not isinstance(content_image, np.ndarray) or
-           content_image.ndim != 3 or content_image.shape[2] != 3):
-            raise TypeError("content_image must be a numpy.ndarray of"
-                            " shape (h, w, 3)")
+                content_image.ndim != 3 or content_image.shape[2] != 3):
+            raise TypeError(
+                "content_image must be a numpy.ndarray with shape (h, w, 3)")
         if (not isinstance(alpha, (int, float)) or alpha < 0):
             raise TypeError("alpha must be a non-negative number")
         if (not isinstance(beta, (int, float)) or beta < 0):
@@ -38,14 +38,18 @@ class NST:
         self.style_features = None
         self.content_features = None
 
-    def scale_image(self, image):
+    @staticmethod
+    def scale_image(image):
         """
-        Method that scales an image
+        Static method that rescales an image so its pixel values are
+        between 0 and 1 and its largest side is 512 pixels
         """
-        h, w, _ = image.shape
-        if h < 256 or w < 256:
-            raise ValueError("image height and width must be at least 256")
+        if (not isinstance(image, np.ndarray) or
+                image.ndim != 3 or image.shape[2] != 3):
+            raise TypeError(
+                "image must be a numpy.ndarray with shape (h, w, 3)")
 
+        h, w, _ = image.shape
         if h > w:
             new_h = 512
             new_w = int(w * (512 / h))
