@@ -68,9 +68,13 @@ class NST:
         Method that loads the VGG19 model and creates a new model that
         outputs the style and content features
         """
-        vgg = tf.keras.applications.VGG19(include_top=False,
-                                          weights='imagenet')
-        vgg.trainable = False
+        VGG19_model = tf.keras.applications.VGG19(
+            include_top=False, weights='imagenet')
+
+        VGG19_model.save("VGG19_base_model")
+        custom_objects = {'MaxPooling2D': tf.keras.layers.AveragePooling2D}
+        vgg = tf.keras.models.load_model(
+            "VGG19_base_model", custom_objects=custom_objects)
 
         style_outputs = [vgg.get_layer(name).output
                          for name in self.style_layers]
@@ -78,4 +82,5 @@ class NST:
 
         model_outputs = style_outputs + [content_output]
 
-        self.model = tf.keras.Model(vgg.input, model_outputs)
+        self.model = tf.keras.models.Model(inputs=vgg.input,
+                                           outputs=model_outputs)
