@@ -196,3 +196,44 @@ class Yolo:
             preprocessed_images.append(normalized_image)
 
         return (np.array(preprocessed_images), np.array(original_sizes))
+
+    def show_boxes(self, image, boxes, classes, scores):
+        """
+        Method that draws bounding boxes on the image
+        """
+        for i in range(len(boxes)):
+            box = boxes[i]
+            cls = classes[i]
+            score = scores[i]
+
+            x1, y1, x2, y2 = box.astype(int)
+            label = f"{self.class_names[cls]}: {score:.2f}"
+
+            cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.putText(image, label, (x1, y1 - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+        return image
+
+    def predict(self, folder_path):
+        """
+        Method that performs object detection on images in a folder
+        """
+        images, image_paths = self.load_images(folder_path)
+        preprocessed_images, original_sizes = self.preprocess_images(images)
+
+        predictions = self.model.predict(preprocessed_images)
+
+        results = []
+        for i in range(len(images)):
+            outputs = [predictions[j][i] for j in range(len(predictions))]
+            boxes, box_confidences, box_class_probs = self.process_outputs(
+                outputs, original_sizes[i])
+            filtered_boxes, filtered_classes, filtered_scores = self.filter_boxes(
+                boxes, box_confidences, box_class_probs)
+            nms_boxes, nms_classes, nms_scores = self.non_max_suppression(
+                filtered_boxes, filtered_classes, filtered_scores)
+
+            results.append((nms_boxes, nms_classes, nms_scores))
+
+        return results
