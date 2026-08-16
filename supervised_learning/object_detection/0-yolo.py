@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """yolov3 object detection model"""
-from tensorflow import Keras as K
+from tensorflow import keras as K
 import numpy as np
 
 
