@@ -34,7 +34,7 @@ class NST:
         self.alpha = alpha
         self.beta = beta
 
-        self.model = None
+        self.load_model()
         self.style_features = None
         self.content_features = None
 
