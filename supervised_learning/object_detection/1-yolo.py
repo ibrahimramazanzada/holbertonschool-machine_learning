@@ -28,39 +28,45 @@ class Yolo:
         box_confidences = []
         box_class_probs = []
 
+        image_height, image_width = image_size[0], image_size[1]
+        input_width = self.model.input.shape[1]
+        input_height = self.model.input.shape[2]
+
         for i in range(len(outputs)):
             grid_h, grid_w, anchor_boxes, _ = outputs[i].shape
-            anchors = self.anchors[i]
 
-            # Extract the box parameters
             t_xy = outputs[i][..., :2]
             t_wh = outputs[i][..., 2:4]
             box_confidence = outputs[i][..., 4:5]
             box_class_prob = outputs[i][..., 5:]
 
-            # Create a grid of coordinates
+            # Grid of cell coordinates
             grid_x = np.arange(grid_w)
             grid_y = np.arange(grid_h)
             grid_x, grid_y = np.meshgrid(grid_x, grid_y)
             grid = np.stack((grid_x, grid_y), axis=-1)
             grid = np.expand_dims(grid, axis=2)
 
-            # Calculate the box center coordinates
+            # Box center, as a fraction of the input image
             box_xy = (1 / (1 + np.exp(-t_xy))) + grid
             box_xy /= [grid_w, grid_h]
 
-            # Calculate the box width and height
-            box_wh = anchors * np.exp(t_wh) / [image_size[1], image_size[0]]
+            # Box width/height, as a fraction of the input image
+            anchors = self.anchors[i]
+            box_wh = anchors * np.exp(t_wh)
+            box_wh /= [input_width, input_height]
 
-            # Convert to corner coordinates
             box_x1y1 = box_xy - (box_wh / 2)
             box_x2y2 = box_xy + (box_wh / 2)
-            boxes.append(grid_h)
-            boxes.append(grid_w)
-            boxes.append(anchor_boxes)
-            boxes.append(np.concatenate((box_x1y1, box_x2y2), axis=-1))
 
-            # Append confidences and class probabilities
+            box = np.concatenate((box_x1y1, box_x2y2), axis=-1)
+            # Scale to the original image size
+            box[..., 0] *= image_width
+            box[..., 1] *= image_height
+            box[..., 2] *= image_width
+            box[..., 3] *= image_height
+
+            boxes.append(box)
             box_confidences.append(1 / (1 + np.exp(-box_confidence)))
             box_class_probs.append(1 / (1 + np.exp(-box_class_prob)))
 
