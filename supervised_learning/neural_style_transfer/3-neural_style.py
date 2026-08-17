@@ -100,3 +100,14 @@ class NST:
         input_shape = tf.shape(input_layer)
         n = tf.cast(input_shape[1] * input_shape[2], tf.float32)
         return result / n
+
+    def generate_features(self):
+        """
+        Method that generates the style and content features
+        """
+        style_outputs = self.model(self.style_image)
+        content_output = self.model(self.content_image)
+
+        self.style_features = [self.gram_matrix(style_layer)
+                               for style_layer in style_outputs[:-1]]
+        self.content_features = content_output[-1]
