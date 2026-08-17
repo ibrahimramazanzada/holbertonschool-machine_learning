@@ -92,11 +92,11 @@ class NST:
         """
         Static method that calculates the gram matrix of an input layer
         """
-        if not isinstance(input_layer, tf.Tensor):
-            raise TypeError("input_layer must be a tensor")
+        if not isinstance(input_layer, (tf.Tensor, tf.Variable)) or \
+                len(input_layer.shape) != 4:
+            raise TypeError("input_layer must be a tensor of rank 4")
 
-        channels = int(input_layer.shape[-1])
-        a = tf.reshape(input_layer, [-1, channels])
-        n = tf.shape(a)[0]
-        gram = tf.matmul(a, a, transpose_a=True)
-        return gram / tf.cast(n, tf.float32)
+        result = tf.linalg.einsum('bijc,bijd->bcd', input_layer, input_layer)
+        input_shape = tf.shape(input_layer)
+        n = tf.cast(input_shape[1] * input_shape[2], tf.float32)
+        return result / n
