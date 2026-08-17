@@ -35,7 +35,7 @@ class NST:
         self.beta = beta
 
         self.load_model()
-        self.style_features = None
+        self.gram_style_features = None
         self.content_features = None
 
     @staticmethod
@@ -108,6 +108,6 @@ class NST:
         style_outputs = self.model(self.style_image)
         content_output = self.model(self.content_image)
 
-        self.style_features = [self.gram_matrix(style_layer)
+        self.gram_style_features = [self.gram_matrix(style_layer)
                                for style_layer in style_outputs[:-1]]
         self.content_features = content_output[-1]
