@@ -199,6 +199,7 @@ class NST:
                 "generated_image must be a tensor of shape {}".format(s))
 
         with tf.GradientTape() as tape:
+            tape.watch(generated_image)
             J_total, J_content, J_style = self.total_cost(generated_image)
 
         grads = tape.gradient(J_total, generated_image)
