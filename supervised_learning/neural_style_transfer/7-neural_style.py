@@ -184,4 +184,4 @@ class NST:
 
         J_total = self.alpha * J_content + self.beta * J_style
 
-        return J_total, J_style, J_content
+        return J_total, J_content, J_style
