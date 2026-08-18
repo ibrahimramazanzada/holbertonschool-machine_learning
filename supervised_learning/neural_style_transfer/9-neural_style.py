@@ -208,7 +208,7 @@ class NST:
         return grads, J_total, J_content, J_style
 
     def generate_image(self, iterations=1000, step=None,
-                       lr=0.01, beta1=0.9, beta2=0.999):
+                       lr=0.01, beta1=0.9, beta2=0.99):
         """Method that generates the image"""
 
         if not isinstance(iterations, int):
@@ -238,8 +238,7 @@ class NST:
 
         generated_image = tf.Variable(self.content_image, dtype=tf.float32)
         optimizer = tf.keras.optimizers.Adam(learning_rate=lr,
-                                             beta_1=beta1, beta_2=beta2,
-                                             epsilon=1e-1)
+                                             beta_1=beta1, beta_2=beta2)
 
         best_cost = float('inf')
         best_image = None
