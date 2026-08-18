@@ -243,13 +243,14 @@ class NST:
 
         best_cost = float('inf')
         best_image = None
+
         for i in range(iterations):
             grads, J_total, J_content, J_style = self.compute_grads(
                 generated_image)
             optimizer.apply_gradients([(grads, generated_image)])
             generated_image.assign(tf.clip_by_value(generated_image, 0.0, 1.0))
 
-            if step is not None and (i + 1) % step == 0:
+            if step is not None and (i % step == 0 or i == iterations):
                 print(f"Cost at iteration {i + 1}: {J_total.numpy():.4e}, "
                       f"content: {J_content.numpy():.4e}, "
                       f"style: {J_style.numpy():.4e}")
