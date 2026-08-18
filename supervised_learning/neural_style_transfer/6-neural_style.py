@@ -154,9 +154,11 @@ class NST:
         """
         Method that calculates the content cost
         """
-        s = self.content_feature.shape[-1]
-        if (not isinstance(content_output, (tf.Tensor, tf.Variable)) or
-                content_output.shape[-1] != s):
-            raise TypeError(f"content_output must be a tensor of shape {s}")
+        s = self.content_feature.shape
+
+        if not isinstance(content_output, (tf.Tensor, tf.Variable)) or \
+                content_output.shape != s:
+            raise TypeError(
+                "content_output must be a tensor of shape {}".format(s))
 
         return tf.reduce_mean(tf.square(content_output - self.content_feature))
