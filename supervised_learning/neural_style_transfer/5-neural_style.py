@@ -149,3 +149,14 @@ class NST:
                        for style_output, gram_target in zip(
                            style_outputs, self.gram_style_features)]
         return tf.add_n(style_costs) / length
+
+    def content_cost(self, content_output):
+        """
+        Method that calculates the content cost
+        """
+        s = self.content_feature.shape[-1]
+        if (not isinstance(content_output, (tf.Tensor, tf.Variable)) or
+                content_output.shape[-1] != s):
+            raise TypeError(f"content_output must be a tensor of shape {s}")
+
+        return tf.reduce_mean(tf.square(content_output - self.content_feature))
