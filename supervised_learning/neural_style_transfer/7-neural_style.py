@@ -167,11 +167,12 @@ class NST:
         """
         Method that calculates the total cost
         """
-        s = self.content_feature.shape
-        if (not isinstance(generated_image, (tf.Tensor, tf.Variable)) or
-                generated_image.shape != (1, *s[1:])):
+        s = self.content_image.shape
+
+        if not isinstance(generated_image, (tf.Tensor, tf.Variable)) or \
+                generated_image.shape != s:
             raise TypeError(
-                f"generated_image must be a tensor of shape {((1, *s[1:]))}")
+                "generated_image must be a tensor of shape {}".format(s))
 
         preprocess_generated = tf.keras.applications.vgg19.preprocess_input(
             generated_image * 255)
@@ -181,6 +182,6 @@ class NST:
         J_style = self.style_cost(style_outputs)
         J_content = self.content_cost(content_output)
 
-        J_total = self.alpha * J_style + self.beta * J_content
+        J_total = self.alpha * J_content + self.beta * J_style
 
         return J_total, J_style, J_content
