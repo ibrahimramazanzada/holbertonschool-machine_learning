@@ -238,7 +238,8 @@ class NST:
 
         generated_image = tf.Variable(self.content_image, dtype=tf.float32)
         optimizer = tf.keras.optimizers.Adam(learning_rate=lr,
-                                             beta_1=beta1, beta_2=beta2)
+                                             beta_1=beta1, beta_2=beta2,
+                                             epsilon=1e-1)
 
         best_cost = float('inf')
         best_image = None
