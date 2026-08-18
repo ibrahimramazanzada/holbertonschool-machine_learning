@@ -254,4 +254,4 @@ class NST:
             if J_total < best_cost:
                 best_cost = J_total
                 best_image = generated_image.numpy()
-        return best_image, best_cost
+        return best_image[0], best_cost
