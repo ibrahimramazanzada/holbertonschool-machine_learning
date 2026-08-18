@@ -132,3 +132,18 @@ class NST:
 
         gram_style_output = self.gram_matrix(style_output)
         return tf.reduce_mean(tf.square(gram_style_output - gram_target))
+
+    def style_cost(self, style_outputs):
+        """
+        Method that calculates the total style cost
+        """
+        if (not isinstance(style_outputs, list) or
+                not all(isinstance(layer, (tf.Tensor, tf.Variable))
+                        and len(layer.shape) == 4 for layer in style_outputs)):
+            raise TypeError(
+                "style_outputs must be a list of tensors of rank 4")
+
+        style_costs = [self.layer_style_cost(style_output, gram_target)
+                       for style_output, gram_target in zip(
+                           style_outputs, self.gram_style_features)]
+        return tf.add_n(style_costs) / len(self.style_layers)
