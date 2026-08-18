@@ -35,6 +35,7 @@ class NST:
         self.content_image = self.scale_image(content_image)
         self.alpha = alpha
         self.beta = beta
+        self.var = var
 
         self.load_model()
         self.generate_features()
