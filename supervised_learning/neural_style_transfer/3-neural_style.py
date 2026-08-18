@@ -104,9 +104,14 @@ class NST:
         """
         Method that generates the style and content features
         """
-        style_outputs = self.model(self.style_image)
-        content_output = self.model(self.content_image)
+        preprocess_style = tf.keras.applications.vgg19.preprocess_input(
+            self.style_image * 255)
+        preprocess_content = tf.keras.applications.vgg19.preprocess_input(
+            self.content_image * 255)
+
+        style_outputs = self.model(preprocess_style)
+        content_output = self.model(preprocess_content)
 
         self.gram_style_features = [self.gram_matrix(style_layer)
-                               for style_layer in style_outputs[:-1]]
-        self.content_features = content_output[-1]
+                                    for style_layer in style_outputs[:-1]]
+        self.content_feature = content_output[-1]
