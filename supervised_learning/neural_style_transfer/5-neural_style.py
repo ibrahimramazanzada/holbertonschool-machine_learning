@@ -137,13 +137,15 @@ class NST:
         """
         Method that calculates the total style cost
         """
-        if (not isinstance(style_outputs, list) or
-                not all(isinstance(layer, (tf.Tensor, tf.Variable))
-                        and len(layer.shape) == 4 for layer in style_outputs)):
+        length = len(self.style_layers)
+
+        if not isinstance(style_outputs, list) or \
+                len(style_outputs) != length:
             raise TypeError(
-                "style_outputs must be a list of tensors of rank 4")
+                "style_outputs must be a list with a length of {}".format(
+                    length))
 
         style_costs = [self.layer_style_cost(style_output, gram_target)
                        for style_output, gram_target in zip(
                            style_outputs, self.gram_style_features)]
-        return tf.add_n(style_costs) / len(self.style_layers)
+        return tf.add_n(style_costs) / length
