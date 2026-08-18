@@ -234,7 +234,7 @@ class NST:
 
         if step is not None and (not isinstance(step, int)):
             raise TypeError("step must be an integer")
-        if step is not None and (step <= 0 or step > iterations):
+        if step is not None and (step <= 0 or step >= iterations):
             raise ValueError("step must be positive and less than iterations")
 
         if not isinstance(lr, (int, float)):
