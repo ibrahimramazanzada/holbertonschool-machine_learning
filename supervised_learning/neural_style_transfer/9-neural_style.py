@@ -176,8 +176,10 @@ class NST:
 
         preprocess_generated = tf.keras.applications.vgg19.preprocess_input(
             generated_image * 255)
-        style_outputs = self.model(preprocess_generated)[:-1]
-        content_output = self.model(preprocess_generated)[-1]
+
+        vgg_outputs = self.model(preprocess_generated)
+        style_outputs = vgg_outputs[:-1]
+        content_output = vgg_outputs[-1]
 
         J_style = self.style_cost(style_outputs)
         J_content = self.content_cost(content_output)
