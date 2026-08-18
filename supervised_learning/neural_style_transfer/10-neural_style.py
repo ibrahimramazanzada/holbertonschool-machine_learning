@@ -12,7 +12,7 @@ class NST:
                     'block4_conv1', 'block5_conv1']
     content_layer = 'block5_conv2'
 
-    def __init__(self, style_image, content_image, alpha=1e4, beta=1):
+    def __init__(self, style_image, content_image, alpha=1e4, beta=1, var=10):
         """
         Constructor method for the NST class
         """
@@ -28,6 +28,8 @@ class NST:
             raise TypeError("alpha must be a non-negative number")
         if (not isinstance(beta, (int, float)) or beta < 0):
             raise TypeError("beta must be a non-negative number")
+        if (not isinstance(var, (int, float)) or var < 0):
+            raise TypeError("var must be a non-negative number")
 
         self.style_image = self.scale_image(style_image)
         self.content_image = self.scale_image(content_image)
@@ -163,6 +165,17 @@ class NST:
 
         return tf.reduce_mean(tf.square(content_output - self.content_feature))
 
+    @staticmethod
+    def variational_cost(generated_image):
+        """
+        Static method that calculates the variational cost
+        """
+        var_x = tf.reduce_sum(tf.abs(generated_image[:, 1:, :, :] -
+                                      generated_image[:, :-1, :, :]))
+        var_y = tf.reduce_sum(tf.abs(generated_image[:, :, 1:, :] -
+                                      generated_image[:, :, :-1, :]))
+        return var_x + var_y
+
     def total_cost(self, generated_image):
         """
         Method that calculates the total cost
@@ -183,10 +196,10 @@ class NST:
 
         J_style = self.style_cost(style_outputs)
         J_content = self.content_cost(content_output)
+        J_var = self.variational_cost(generated_image)
+        J_total = self.alpha * J_content + self.beta * J_style + self.var * J_var
 
-        J_total = self.alpha * J_content + self.beta * J_style
-
-        return J_total, J_content, J_style
+        return J_total, J_content, J_style, J_var
 
     def compute_grads(self, generated_image):
         """
@@ -202,10 +215,10 @@ class NST:
 
         with tf.GradientTape() as tape:
             tape.watch(generated_image)
-            J_total, J_content, J_style = self.total_cost(generated_image)
+            J_total, J_content, J_style, J_var = self.total_cost(generated_image)
 
         grads = tape.gradient(J_total, generated_image)
-        return grads, J_total, J_content, J_style
+        return grads, J_total, J_content, J_style, J_var
 
     def generate_image(self, iterations=1000, step=None,
                        lr=0.01, beta1=0.9, beta2=0.99):
@@ -244,12 +257,12 @@ class NST:
         best_image = None
 
         for i in range(iterations + 1):
-            grads, J_total, J_content, J_style = self.compute_grads(
+            grads, J_total, J_content, J_style, J_var = self.compute_grads(
                 generated_image)
 
             if step is not None and (i % step == 0 or i == iterations):
-                print("Cost at iteration {}: {}, content {}, style {}".format(
-                    i, J_total, J_content, J_style))
+                print("Cost at iteration {}: {}, content {}, style {}, var {}".format(
+                    i, J_total, J_content, J_style, J_var))
 
             if J_total < best_cost:
                 best_cost = J_total
