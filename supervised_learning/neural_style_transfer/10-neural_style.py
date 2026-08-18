@@ -170,10 +170,14 @@ class NST:
         """
         Static method that calculates the variational cost
         """
+        if not isinstance(generated_image, (tf.Tensor, tf.Variable)) or \
+                len(generated_image.shape) not in (3, 4):
+            raise TypeError("image must be a tensor of rank 3 or 4")
+
         var_x = tf.reduce_sum(tf.abs(generated_image[:, 1:, :, :] -
-                                      generated_image[:, :-1, :, :]))
+                                     generated_image[:, :-1, :, :]))
         var_y = tf.reduce_sum(tf.abs(generated_image[:, :, 1:, :] -
-                                      generated_image[:, :, :-1, :]))
+                                     generated_image[:, :, :-1, :]))
         return var_x + var_y
 
     def total_cost(self, generated_image):
@@ -197,7 +201,8 @@ class NST:
         J_style = self.style_cost(style_outputs)
         J_content = self.content_cost(content_output)
         J_var = self.variational_cost(generated_image)
-        J_total = self.alpha * J_content + self.beta * J_style + self.var * J_var
+        J_total = (self.alpha * J_content + self.beta * J_style +
+                   self.var * J_var)
 
         return J_total, J_content, J_style, J_var
 
@@ -215,7 +220,8 @@ class NST:
 
         with tf.GradientTape() as tape:
             tape.watch(generated_image)
-            J_total, J_content, J_style, J_var = self.total_cost(generated_image)
+            J_total, J_content, J_style, J_var = self.total_cost(
+                generated_image)
 
         grads = tape.gradient(J_total, generated_image)
         return grads, J_total, J_content, J_style, J_var
@@ -261,8 +267,9 @@ class NST:
                 generated_image)
 
             if step is not None and (i % step == 0 or i == iterations):
-                print("Cost at iteration {}: {}, content {}, style {}, var {}".format(
-                    i, J_total, J_content, J_style, J_var))
+                print("Cost at iteration {}: {}, content {},"
+                      " style {}, var {}".format(
+                        i, J_total, J_content, J_style, J_var))
 
             if J_total < best_cost:
                 best_cost = J_total
