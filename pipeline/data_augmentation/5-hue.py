@@ -5,4 +5,4 @@ import tensorflow as tf
 
 def change_hue(image, delta):
     """changes the hue of an image"""
-    return tf.image.random_hue(image, max_delta=delta)
+    return tf.image.adjust_hue(image, delta)
