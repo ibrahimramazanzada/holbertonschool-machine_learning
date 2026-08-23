@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Calculating q affinity for t-SNE"""
+"""Calculating gradients for t-SNE"""
 import numpy as np
 Q_affinities = __import__('5-Q_affinities').Q_affinities
 
