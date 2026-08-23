@@ -2,7 +2,10 @@
 """neural style transfer"""
 import tensorflow as tf
 import numpy as np
-
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
+import os
+import random
 
 class NST:
     """
@@ -73,10 +76,10 @@ class NST:
         VGG19_model = tf.keras.applications.VGG19(
             include_top=False, weights='imagenet')
 
-        VGG19_model.save("VGG19_base_model")
+        VGG19_model.save("VGG19_base_model.h5")
         custom_objects = {'MaxPooling2D': tf.keras.layers.AveragePooling2D}
         vgg = tf.keras.models.load_model(
-            "VGG19_base_model", custom_objects=custom_objects)
+            "VGG19_base_model.h5", custom_objects=custom_objects)
 
         vgg.trainable = False
 
