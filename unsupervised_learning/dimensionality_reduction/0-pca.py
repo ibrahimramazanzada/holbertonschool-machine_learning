@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""PCA"""
+"""PCA implementation"""
 import numpy as np
 
 
