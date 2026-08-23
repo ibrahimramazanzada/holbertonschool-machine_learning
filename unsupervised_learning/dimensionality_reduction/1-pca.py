@@ -6,9 +6,16 @@ import numpy as np
 def pca(X, ndim):
     """performs PCA on a dataset"""
 
-    U, S, Vt = np.linalg.svd(X)
+    mean = np.mean(X, axis=0)
+    X_centered = X - mean
 
-    # W is the first ndim rows of Vt, transposed to shape (d, ndim)
+    # SVD on the centered data
+    U, S, Vt = np.linalg.svd(X_centered)
+
+    # Take the first ndim principal directions
     W = Vt[:ndim].T
 
-    return W
+    # Project the centered data onto the new space
+    T = X_centered @ W
+
+    return T
