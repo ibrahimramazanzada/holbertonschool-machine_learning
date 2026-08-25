@@ -33,4 +33,4 @@ def pdf(X, m, S):
 
     pdf_values = (1 / np.sqrt((2 * np.pi) ** d * det_S)) * np.exp(exponent)
 
-    return pdf_values
+    return np.maximum(pdf_values, 1e-300)
