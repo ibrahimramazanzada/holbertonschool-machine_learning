@@ -17,10 +17,8 @@ def variance(X, C):
     distances = np.linalg.norm(X[:, np.newaxis] - C, axis=2)
     labels = np.argmin(distances, axis=1)
 
-    variance = 0.0
-    for i in range(C.shape[0]):
-        points = X[labels == i]
-        if points.shape[0] > 0:
-            variance += np.sum(np.linalg.norm(points - C[i], axis=1) ** 2)
+    if C.shape[0] == 0:
+        return 0.0
 
-    return variance
+    assigned_centroids = C[labels]
+    return np.sum(np.sum((X - assigned_centroids) ** 2, axis=1))
