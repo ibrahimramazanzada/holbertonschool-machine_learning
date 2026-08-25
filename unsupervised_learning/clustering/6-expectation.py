@@ -1,4 +1,4 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 """Calculate Expectation step in GMM"""
 import numpy as np
 pdf = __import__('5-pdf').pdf
