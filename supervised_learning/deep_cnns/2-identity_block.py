@@ -4,24 +4,26 @@ from tensorflow import keras as K
 
 
 def identity_block(A_prev, filters):
-    """Build an identity block for a ResNet architecture."""
-    F1, F2, F3 = filters
+    """Build an identity block for a ResNet architecture"""
 
-    X = K.layers.Conv2D(F1, (1, 1), padding='same',
-                        kernel_initializer='he_normal')(A_prev)
+    F11, F3, F12 = filters
+    init = K.initializers.he_normal(seed=0)
+
+    X = K.layers.Conv2D(F11, (1, 1), padding='same',
+                        kernel_initializer=init)(A_prev)
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.Activation('relu')(X)
 
-    X = K.layers.Conv2D(F2, (3, 3), padding='same',
-                        kernel_initializer='he_normal')(X)
+    X = K.layers.Conv2D(F3, (3, 3), padding='same',
+                        kernel_initializer=init)(X)
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.Activation('relu')(X)
 
-    X = K.layers.Conv2D(F3, (1, 1), padding='same',
-                        kernel_initializer='he_normal')(X)
+    X = K.layers.Conv2D(F12, (1, 1), padding='same',
+                        kernel_initializer=init)(X)
     X = K.layers.BatchNormalization(axis=3)(X)
 
-    X_shortcut = A_prev
-    X = K.layers.Add()([X, X_shortcut])
+    X = K.layers.Add()([X, A_prev])
     X = K.layers.Activation('relu')(X)
+
     return X
