@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Bayesian Optimization"""
 import numpy as np
-from scipy.stats import norm
 GP = __import__('2-gp').GaussianProcess
 
 
@@ -22,24 +21,3 @@ class BayesianOptimization:
                                ac_samples).reshape(-1, 1)
         self.xsi = xsi
         self.minimize = minimize
-
-    def acquisition(self):
-        """
-        Calculates the next best sample location
-        """
-        mu, sigma = self.gp.predict(self.X_s)
-
-        if self.minimize:
-            Y_opt = np.min(self.gp.Y)
-            imp = Y_opt - mu - self.xsi
-        else:
-            Y_opt = np.max(self.gp.Y)
-            imp = mu - Y_opt - self.xsi
-
-        Z = imp / sigma
-        ei = imp * norm.cdf(Z) + sigma * norm.pdf(Z)
-        ei[sigma == 0.0] = 0.0
-
-        X_next = self.X_s[np.argmax(ei)]
-
-        return X_next, ei
