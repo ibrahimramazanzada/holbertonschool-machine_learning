@@ -34,10 +34,14 @@ class GaussianProcess:
         """
         K_s = self.kernel(self.X, X_s)
         K_ss = self.kernel(X_s, X_s)
-        K_inv = np.linalg.inv(self.K)
 
-        mu_s = K_s.T.dot(K_inv).dot(self.Y)
-        cov_s = K_ss - K_s.T.dot(K_inv).dot(K_s)
+        L = np.linalg.cholesky(self.K + 1e-8 * np.eye(len(self.X)))
+        alpha = np.linalg.solve(L.T, np.linalg.solve(L, self.Y))
+
+        mu_s = K_s.T.dot(alpha)
+
+        v = np.linalg.solve(L, K_s)
+        cov_s = K_ss - v.T.dot(v)
 
         return mu_s.flatten(), np.diagonal(cov_s)
 
