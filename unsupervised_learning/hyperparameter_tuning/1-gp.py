@@ -27,3 +27,16 @@ class GaussianProcess:
             np.sum(X2 ** 2, axis=1) - 2 * np.dot(X1, X2.T)
 
         return (self.sigma_f ** 2) * np.exp(-0.5 / (self.l ** 2) * sqdist)
+
+    def predict(self, X_s):
+        """
+        Predicts the mean and standard deviation of points in a Gaussian process
+        """
+        K_s = self.kernel(self.X, X_s)
+        K_ss = self.kernel(X_s, X_s)
+        K_inv = np.linalg.inv(self.K)
+
+        mu_s = K_s.T.dot(K_inv).dot(self.Y)
+        cov_s = K_ss - K_s.T.dot(K_inv).dot(K_s)
+
+        return mu_s.flatten(), np.diagonal(cov_s)
