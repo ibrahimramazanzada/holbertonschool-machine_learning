@@ -40,3 +40,11 @@ class GaussianProcess:
         cov_s = K_ss - K_s.T.dot(K_inv).dot(K_s)
 
         return mu_s.flatten(), np.diagonal(cov_s)
+
+    def update(self, X_new, Y_new):
+        """
+        Updates a Gaussian Process with new data points
+        """
+        self.X = np.vstack((self.X, X_new))
+        self.Y = np.vstack((self.Y, Y_new))
+        self.K = self.kernel(self.X, self.X)
