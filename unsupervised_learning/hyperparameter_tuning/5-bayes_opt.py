@@ -1,4 +1,4 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 """Bayesian Optimization"""
 import numpy as np
 from scipy.stats import norm
@@ -69,15 +69,3 @@ class BayesianOptimization:
         Y_opt = self.gp.Y[idx]
 
         return X_opt, Y_opt
-def f(x):
-    """our 'black box' function"""
-    return np.sin(5*x) + 2*np.sin(-2*x)
-np.random.seed(0)
-X_init = np.random.uniform(-np.pi, 2*np.pi, (2, 1))
-Y_init = f(X_init)
-
-bo = BayesianOptimization(f, X_init, Y_init, (-np.pi, 2*np.pi), 50, l=0.6, sigma_f=2)
-X_opt, Y_opt = bo.optimize(50)
-print('Optimal X:', X_opt)
-print('Optimal Y:', Y_opt)
-print('All sample inputs:', bo.gp.X)
