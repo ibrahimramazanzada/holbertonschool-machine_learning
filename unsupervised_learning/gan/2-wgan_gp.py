@@ -30,7 +30,7 @@ class WGAN_GP(keras.Model):
         self.batch_size = batch_size
         self.disc_iter = disc_iter
         self.learning_rate = learning_rate
-        self.beta_1 = 0.5
+        self.beta_1 = 0.3
         self.beta_2 = 0.9
         self.lambda_gp = lambda_gp
         self.dims = self.real_examples.shape
@@ -104,6 +104,7 @@ class WGAN_GP(keras.Model):
 
     # overloading train_step()
     def train_step(self, useless_argument):
+        """Train step."""
         for _ in range(self.disc_iter):
             with tf.GradientTape() as discr_tape:
                 real_sample = self.get_real_sample()
