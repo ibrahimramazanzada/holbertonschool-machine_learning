@@ -1,20 +1,14 @@
 #!/usr/bin/env python3
 """Variational autoencoder"""
 import tensorflow.keras as keras
-import tensorflow.keras.backend as K
 
 
 def autoencoder(input_dims, hidden_layers, latent_dims):
     """
     Creates a variational autoencoder
-
-    input_dims: integer, dimensions of the model input
-    hidden_layers: list, number of nodes for each hidden layer in the
-                   encoder (reversed for the decoder)
-    latent_dims: integer, dimensions of the latent space representation
-
-    Returns: encoder, decoder, auto
     """
+    K = keras.backend
+
     # Encoder
     encoder_inputs = keras.Input(shape=(input_dims,))
     x = encoder_inputs
