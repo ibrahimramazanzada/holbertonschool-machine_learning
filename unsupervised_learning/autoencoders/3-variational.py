@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Comment of Function"""
+"""Variational autoencoder"""
 import tensorflow.keras as keras
 
 
