@@ -43,4 +43,4 @@ def bag_of_words(sentences, vocab=None):
             if j is not None:
                 embeddings[i, j] += 1
 
-    return embeddings, features
+    return embeddings, np.array(features)
