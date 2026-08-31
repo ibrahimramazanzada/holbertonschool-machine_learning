@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Gensim to keras"""
+import tensorflow as tf
 
 
 def gensim_to_keras(model):
