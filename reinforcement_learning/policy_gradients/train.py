@@ -1,4 +1,4 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 """Module that implements full training using policy gradient."""
 import numpy as np
 
