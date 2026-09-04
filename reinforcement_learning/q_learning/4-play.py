@@ -5,10 +5,10 @@ import numpy as np
 
 
 def play(env, Q, max_steps=100):
-    """Play an episode and return rewards and rendered board states."""
+    """Play an episode using the trained Q-table."""
     state, _ = env.reset()
-    rendered_outputs = [env.render()]
     total_rewards = 0
+    rendered_outputs = []
 
     for _ in range(max_steps):
         action = np.argmax(Q[state])
