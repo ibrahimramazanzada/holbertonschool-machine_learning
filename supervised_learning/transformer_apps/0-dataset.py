@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Defines the Dataset class for machine translation preprocessing."""
-import tensorflow_datasets as tfds
 import transformers
+from setup import load_pt2en
 
 
 class Dataset:
@@ -9,17 +9,10 @@ class Dataset:
 
     def __init__(self):
         """Initialize train/validation splits and sub-word tokenizers."""
-        self.data_train = self.load_pt2en('train')
-        self.data_valid = self.load_pt2en('validation')
+        self.data_train = load_pt2en('train')
+        self.data_valid = load_pt2en('validation')
         self.tokenizer_pt, self.tokenizer_en = self.tokenize_dataset(
             self.data_train)
-
-    def load_pt2en(self, split):
-        """
-        Load the ted_hrlr_translate/pt_to_en dataset for a given split.
-        """
-        return tfds.load('ted_hrlr_translate/pt_to_en',
-                          split=split, as_supervised=True)
 
     def tokenize_dataset(self, data):
         """
