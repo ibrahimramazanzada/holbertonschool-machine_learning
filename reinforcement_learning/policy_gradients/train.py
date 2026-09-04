@@ -10,7 +10,7 @@ def train(env, nb_episodes, alpha=0.000045, gamma=0.98):
     Implement full training with the Monte-Carlo policy gradient.
     """
     weight = np.random.rand(env.observation_space.shape[0],
-                             env.action_space.n)
+                            env.action_space.n)
     scores = []
 
     for episode in range(nb_episodes):
