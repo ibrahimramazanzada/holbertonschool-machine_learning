@@ -16,6 +16,8 @@ def policy_gradient(state, weight):
     """
     Compute the Monte-Carlo policy gradient of a state and weight matrix.
     """
+    state = state.reshape(1, -1) if state.ndim == 1 else state
+
     P = policy(state, weight)
     action = np.random.choice(P.shape[1], p=P[0])
 
