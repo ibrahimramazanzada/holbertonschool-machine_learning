@@ -22,7 +22,7 @@ class Dataset:
         def filter_max_length(pt, en):
             """Filters out examples with sentences longer than max_len."""
             return tf.logical_and(tf.size(pt) <= max_len,
-                                   tf.size(en) <= max_len)
+                                  tf.size(en) <= max_len)
 
         # Filter, cache, shuffle, batch, and prefetch the training set
         self.data_train = self.data_train.filter(filter_max_length)
